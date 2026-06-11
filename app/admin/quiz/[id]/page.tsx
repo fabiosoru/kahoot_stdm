@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -50,11 +50,7 @@ export default function EditQuiz() {
     { text: '', isCorrect: false },
   ])
 
-  useEffect(() => {
-    fetchQuiz()
-  }, [quizId])
-
-  const fetchQuiz = async () => {
+  const fetchQuiz = useCallback(async () => {
     try {
       setLoading(true)
       const res = await fetch(`/api/admin/quiz/${quizId}`)
@@ -73,7 +69,11 @@ export default function EditQuiz() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [quizId])
+
+  useEffect(() => {
+    fetchQuiz()
+  }, [fetchQuiz])
 
   const handleAddQuestion = async () => {
     if (!newQuestion.text.trim() || newChoices.filter((c) => c.text.trim()).length < 2) {

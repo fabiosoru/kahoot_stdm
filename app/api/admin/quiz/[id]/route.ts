@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { checkAdminSession } from '@/lib/session'
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params
   try {
     const isAdmin = await checkAdminSession()
     if (!isAdmin) {
@@ -10,7 +11,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     }
 
     const quiz = await prisma.quiz.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { questions: true },
     })
 

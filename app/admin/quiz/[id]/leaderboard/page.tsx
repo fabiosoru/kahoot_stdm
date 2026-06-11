@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
@@ -28,13 +28,7 @@ export default function AdminLeaderboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    fetchData()
-    const interval = setInterval(fetchData, 5000)
-    return () => clearInterval(interval)
-  }, [quizId])
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/quiz/${quizId}`)
       if (!res.ok) throw new Error('Failed to load quiz')
@@ -52,7 +46,13 @@ export default function AdminLeaderboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [quizId])
+
+  useEffect(() => {
+    fetchData()
+    const interval = setInterval(fetchData, 5000)
+    return () => clearInterval(interval)
+  }, [fetchData])
 
   if (loading) {
     return (

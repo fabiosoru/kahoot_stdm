@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { checkAdminSession } from '@/lib/session'
 
-export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params
   try {
     const isAdmin = await checkAdminSession()
     if (!isAdmin) {
@@ -10,7 +11,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
     }
 
     const questions = await prisma.question.findMany({
-      where: { quizId: params.id },
+      where: { quizId: id },
       include: { choices: true },
       orderBy: { order: 'asc' },
     })
@@ -22,14 +23,15 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   }
 }
 
-export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params
   try {
     const isAdmin = await checkAdminSession()
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const body = await _req.json()
+    const body = await req.json()
     const { text, timeLimit, points, order, choices } = body
 
     if (!text || !choices || choices.length < 2) {
@@ -48,7 +50,7 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
 
     const question = await prisma.question.create({
       data: {
-        quizId: params.id,
+        quizId: id,
         text,
         timeLimit,
         points,
