@@ -18,7 +18,7 @@ Puis ouvrez : **http://localhost:3000**
 
 ### 🔐 Admin Panel
 - **URL** : http://localhost:3000/admin/login
-- **Password** : `admin123`
+- **Password** : `Fourni à l'administrateur`
 - Créer et gérer les quiz
 
 ### 🎮 Participant

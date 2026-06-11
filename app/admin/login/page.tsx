@@ -135,8 +135,8 @@ export default function AdminLogin() {
             <div className="flex gap-3">
               <IconSet.Info size={18} className="text-brand-blue flex-shrink-0 mt-0.5" />
               <div className="text-xs text-brand-blue">
-                <p className="font-semibold mb-1">Mode démo</p>
-                <p>Mot de passe : <code className="bg-white px-2 py-0.5 rounded font-mono">admin123</code></p>
+                <p className="font-semibold mb-1">Accès Admin</p>
+                <p>Mot de passe fourni par l'administrateur système</p>
               </div>
             </div>
           </div>

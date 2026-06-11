@@ -17,7 +17,7 @@ Le serveur démarre sur `http://localhost:3000`
 
 #### 👨‍💼 Admin
 - URL: `http://localhost:3000/admin/login`
-- Mot de passe par défaut: `admin123`
+- Mot de passe par défaut: `Fourni à l'administrateur`
 - Permet de créer et gérer les quiz
 
 #### 🎮 Participant
@@ -104,7 +104,7 @@ SQLite avec Prisma ORM
 Variables d'environnement dans `.env.local`:
 ```
 DATABASE_URL="file:./prisma/dev.db"
-ADMIN_PASSWORD="admin123"
+ADMIN_PASSWORD="Fourni à l'administrateur"
 JWT_SECRET="votre-clé-secrète"
 ```
 

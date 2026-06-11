@@ -39,7 +39,7 @@ make up
 
 - **Home**: http://localhost:3000
 - **Admin Panel**: http://localhost:3000/admin/login
-- **Default Admin**: `admin123`
+- **Default Admin**: `Fourni à l'administrateur`
 
 ### Step 4: View Logs
 

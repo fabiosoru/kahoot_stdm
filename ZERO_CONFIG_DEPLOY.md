@@ -52,7 +52,7 @@ L'app sera accessible sur le port **3000** du serveur.
 
 Pour l'admin :
 - URL: `/admin/login`
-- Password: `admin123`
+- Le mot de passe sera communiqué à l'administrateur
 
 Pour jouer un quiz :
 - URL: `/quiz/SANTE2026`

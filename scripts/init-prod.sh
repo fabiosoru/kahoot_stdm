@@ -91,7 +91,7 @@ SQL
   echo ""
   echo "📝 Admin credentials:"
   echo "   Username: admin"
-  echo "   Password: admin123"
+  echo "   Password: Fourni à l'administrateur"
   echo ""
   echo "⚠️  IMPORTANT: Change the admin password in production!"
 
