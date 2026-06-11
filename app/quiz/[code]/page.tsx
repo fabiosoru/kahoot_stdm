@@ -242,7 +242,7 @@ export default function QuizLanding() {
       {/* Footer */}
       <footer className="border-t border-gray-200 py-6 mt-16">
         <div className="container-base text-center text-sm text-gray-600">
-          <p>© 2026 Groupe RATP Dev • Tous droits réservés</p>
+          <p>© 2026 SORU Fabio • Tous droits réservés</p>
         </div>
       </footer>
     </div>

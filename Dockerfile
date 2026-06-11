@@ -1,9 +1,6 @@
 # Multi-stage build for optimized production image
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 WORKDIR /app
-
-# Install pnpm (optional, but faster than npm)
-# Using npm for simplicity
 
 FROM base AS dependencies
 COPY package.json package-lock.json ./
@@ -20,6 +17,9 @@ FROM base AS runtime
 ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000
+
+# Install Prisma runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Copy runtime dependencies
 COPY --from=dependencies /app/node_modules ./node_modules

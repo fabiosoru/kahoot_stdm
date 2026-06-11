@@ -110,7 +110,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-gray-200 py-8 mt-16">
         <div className="container-base text-center text-sm text-gray-600">
-          <p>Groupe RATP Dev • Journée Santé & Sécurité • 2026</p>
+          <p>SORU Fabio • Journée Santé & Sécurité • 2026</p>
         </div>
       </footer>
     </div>
