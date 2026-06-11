@@ -46,7 +46,7 @@ export default function AdminLogin() {
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
               <Image
-              src="/champagne-logo.png"
+              src="/affiche.png"
               alt="Champagne Mobilités"
               width={50}
               height={50}

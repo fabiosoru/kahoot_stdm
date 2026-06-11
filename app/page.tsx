@@ -23,7 +23,7 @@ export default function Home() {
         <div className="container-base py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/champagne-logo.png"
+              src="/affiche.png"
               alt="Champagne Mobilités"
               width={50}
               height={50}
