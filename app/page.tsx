@@ -25,18 +25,14 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-16 sm:py-24">
         <div className="container-base max-w-3xl mx-auto text-center animate-slide-up">
-          <div className="mb-4 inline-block">
-            <span className="badge badge-info">2e édition 2026</span>
-          </div>
-
           {/* Logo Images */}
-          <div className="flex flex-col items-center gap-6 mb-12">
+          <div className="flex flex-col items-center gap-0">
             <Image
               src="/logo-journee-sr.png"
               alt="Journée Santé & Sécurité"
               width={400}
               height={200}
-              className="h-auto w-full max-w-md"
+              className="h-auto w-full max-w-xl"
               priority
             />
             <Image
@@ -44,7 +40,7 @@ export default function Home() {
               alt="Affiche Journée Santé & Sécurité"
               width={300}
               height={300}
-              className="h-auto w-full max-w-xs"
+              className="h-auto w-full max-w-2xl"
               priority
             />
           </div>
