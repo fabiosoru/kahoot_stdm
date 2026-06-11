@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Quiz {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  accessCode  String        @unique
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  questions   Question[]
+  participants Participant[]
+
+  @@map("quizzes")
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  text      String
+  imageUrl  String?
+  timeLimit Int      @default(30)
+  points    Int      @default(100)
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  choices   Choice[]
+  answers   Answer[]
+
+  @@index([quizId])
+  @@map("questions")
+}
+
+model Choice {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  isCorrect  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  answers    Answer[]
+
+  @@index([questionId])
+  @@map("choices")
+}
+
+model Participant {
+  id          String    @id @default(cuid())
+  quizId      String
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
+  company     String
+  token       String    @unique @default(cuid())
+  score       Int       @default(0)
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  answers     Answer[]
+
+  @@unique([quizId, firstName, lastName])
+  @@index([quizId])
+  @@index([token])
+  @@map("participants")
+}
+
+model Answer {
+  id            String      @id @default(cuid())
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      Question    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  choiceId      String?
+  choice        Choice?     @relation(fields: [choiceId], references: [id], onDelete: SetNull)
+  answeredAt    DateTime    @default(now())
+  timeSpent     Int         @default(0)
+
+  @@unique([participantId, questionId])
+  @@index([participantId])
+  @@index([questionId])
+  @@map("answers")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admin_users")
+}
