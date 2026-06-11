@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface Choice {
   id: string
@@ -169,7 +171,8 @@ export default function QuizPlay() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-4 flex flex-col">
-      {/* Header */}
+      <Header backLink={`/quiz/${code}`} showAdminButton={true} />
+
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <span className="text-white font-black text-2xl">
@@ -239,6 +242,8 @@ export default function QuizPlay() {
           <p className="text-white text-2xl font-black">{feedback.message}</p>
         </div>
       )}
+
+      <Footer compact={true} />
     </div>
   )
 }

@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface Quiz {
   id: string
@@ -58,28 +60,11 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
-              <IconSet.BarChart3 size={24} className="text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-brand-blue">Dashboard Admin</h1>
-          </div>
-          <button
-            onClick={handleLogout}
-            className="btn btn-secondary btn-sm"
-          >
-            <IconSet.LogOut size={16} />
-            Déconnexion
-          </button>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header />
 
       {/* Main Content */}
-      <main className="container-base py-8">
+      <main className="container-base py-8 flex-1">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 animate-slide-up">
           <div>
@@ -185,12 +170,7 @@ export default function AdminDashboard() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-6 mt-16">
-        <div className="container-base text-center text-sm text-gray-600">
-          <p>© 2026 SORU Fabio • Tous droits réservés</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

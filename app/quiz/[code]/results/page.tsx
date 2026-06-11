@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface LeaderboardEntry {
   id: string
@@ -87,8 +89,10 @@ export default function QuizResults() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-4 flex flex-col">
+      <Header backLink={`/quiz/${code}`} showAdminButton={true} />
+
+      <div className="max-w-4xl mx-auto flex-1 flex flex-col">
         {/* Results Header */}
         {results && (
           <div className="text-center mb-10 animate-slide-in">
@@ -182,6 +186,8 @@ export default function QuizResults() {
           </Link>
         </div>
       </div>
+
+      <Footer compact={true} />
     </div>
   )
 }

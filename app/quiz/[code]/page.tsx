@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface Quiz {
   id: string
@@ -82,19 +84,10 @@ export default function QuizLanding() {
 
   if (!quiz) {
     return (
-      <div className="min-h-screen bg-white">
-        <header className="app-header">
-          <div className="container-base py-4">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
-                <IconSet.Award size={24} className="text-white" />
-              </div>
-              <h1 className="text-xl font-bold text-brand-blue">Journée Santé & Sécurité</h1>
-            </Link>
-          </div>
-        </header>
+      <div className="min-h-screen bg-white flex flex-col">
+        <Header showAdminButton={true} />
 
-        <main className="container-base flex items-center justify-center py-24">
+        <main className="container-base flex items-center justify-center py-24 flex-1">
           <div className="card p-12 max-w-md w-full text-center">
             <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
               <IconSet.AlertCircle size={32} className="text-red-600" />
@@ -109,26 +102,18 @@ export default function QuizLanding() {
             </Link>
           </div>
         </main>
+
+        <Footer />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
-              <IconSet.Award size={24} className="text-white" />
-            </div>
-            <h1 className="text-xl font-bold text-brand-blue">Journée Santé & Sécurité</h1>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header showAdminButton={true} />
 
       {/* Main Content */}
-      <main className="container-base max-w-2xl py-12">
+      <main className="container-base max-w-2xl py-12 flex-1">
         <div className="mb-8 animate-slide-up">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{quiz.title}</h1>
           {quiz.description && (
@@ -239,12 +224,7 @@ export default function QuizLanding() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-6 mt-16">
-        <div className="container-base text-center text-sm text-gray-600">
-          <p>© 2026 SORU Fabio • Tous droits réservés</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

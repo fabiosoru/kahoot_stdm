@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 export default function NewQuiz() {
   const router = useRouter()
@@ -47,19 +49,11 @@ export default function NewQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <Link href="/admin" className="flex items-center gap-2">
-            <IconSet.ChevronRight size={20} className="rotate-180 text-gray-600" />
-            <span className="font-semibold text-gray-700">Retour</span>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header backLink="/admin" backLabel="Dashboard" />
 
       {/* Main Content */}
-      <main className="container-base max-w-2xl py-12">
+      <main className="container-base max-w-2xl py-12 flex-1">
         <div className="mb-8 animate-slide-up">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Créer un Quiz</h1>
           <p className="text-gray-600">Configurez les paramètres de base de votre quiz</p>
@@ -171,6 +165,8 @@ export default function NewQuiz() {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }

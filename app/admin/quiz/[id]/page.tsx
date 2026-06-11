@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface Choice {
   id: string
@@ -151,27 +153,11 @@ export default function EditQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <Link href="/admin" className="flex items-center gap-2">
-            <IconSet.ChevronRight size={20} className="rotate-180 text-gray-600" />
-            <span className="font-semibold text-gray-700">Dashboard</span>
-          </Link>
-          {quiz && (
-            <Link href={`/admin/quiz/${quizId}/leaderboard`}>
-              <button className="btn btn-outline btn-sm">
-                <IconSet.BarChart3 size={16} />
-                Classement
-              </button>
-            </Link>
-          )}
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header backLink="/admin" />
 
       {/* Main Content */}
-      <main className="container-base max-w-4xl py-8">
+      <main className="container-base max-w-4xl py-8 flex-1">
         {quiz && (
           <>
             <div className="mb-8 animate-slide-up">
@@ -390,6 +376,8 @@ export default function EditQuiz() {
           </>
         )}
       </main>
+
+      <Footer />
     </div>
   )
 }

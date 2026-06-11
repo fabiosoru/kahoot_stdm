@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { IconSet } from '@/components/Icon'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface Leaderboard {
   rank: number
@@ -66,19 +68,11 @@ export default function AdminLeaderboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <Link href={`/admin/quiz/${quizId}`} className="flex items-center gap-2 hover:text-brand-blue transition-colors">
-            <IconSet.ChevronRight size={20} className="rotate-180" />
-            <span className="font-semibold">Retour à l'édition</span>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
+      <Header backLink={`/admin/quiz/${quizId}`} backLabel="Retour à l'édition" />
 
       {/* Main Content */}
-      <main className="container-base max-w-5xl py-12">
+      <main className="container-base max-w-5xl py-12 flex-1">
         <div className="mb-12 animate-slide-up">
           <h1 className="text-4xl sm:text-5xl font-black text-brand-blue mb-3 flex items-center gap-3">
             <IconSet.TrendingUp size={32} />
@@ -218,6 +212,8 @@ export default function AdminLeaderboard() {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   )
 }

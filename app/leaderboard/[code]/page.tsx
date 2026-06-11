@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 interface LeaderboardEntry {
   id: string
@@ -53,7 +55,8 @@ export default function Leaderboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-8 flex flex-col">
-      {/* Header */}
+      <Header backLink={`/quiz/${code}`} showAdminButton={true} />
+
       <div className="text-center mb-12">
         <div className="text-7xl mb-4 animate-bounce-in">🏆</div>
         <h1 className="text-6xl font-black text-white mb-2">CLASSEMENT</h1>
@@ -141,10 +144,11 @@ export default function Leaderboard() {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="text-center text-white text-sm mt-12 opacity-75 font-semibold">
         <p>📊 Total: {data?.total} participants | 🔄 Actualisation automatique</p>
       </div>
+
+      <Footer compact={true} />
     </div>
   )
 }
