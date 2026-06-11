@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { IconSet } from '@/components/Icon'
@@ -27,10 +28,27 @@ export default function Home() {
           <div className="mb-4 inline-block">
             <span className="badge badge-info">2e édition 2026</span>
           </div>
-          <h2 className="text-5xl sm:text-6xl font-black text-brand-blue mb-6 leading-tight">
-            Journée Santé<br />& Sécurité
-          </h2>
-          <p className="text-xl text-gray-600 mb-12 font-medium">
+
+          {/* Logo Images */}
+          <div className="flex flex-col items-center gap-6 mb-12">
+            <Image
+              src="/logo-journee-sr.png"
+              alt="Journée Santé & Sécurité"
+              width={400}
+              height={200}
+              className="h-auto w-full max-w-md"
+              priority
+            />
+            <Image
+              src="/affiche.png"
+              alt="Affiche Journée Santé & Sécurité"
+              width={300}
+              height={300}
+              className="h-auto w-full max-w-xs"
+              priority
+            />
+          </div>
+          <p className="text-lg text-gray-600 mb-10 font-medium">
             Testez vos connaissances avec un quiz interactif et amusant !
           </p>
 

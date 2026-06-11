@@ -32,7 +32,7 @@ export default function Header({ showAdminButton = false, backLink, backLabel }:
               priority
             />
             <div>
-              <h1 className="text-sm font-bold text-brand-blue">Journée Santé & Sécurité</h1>
+              <h1 className="text-sm font-bold text-brand-blue">Quiz - Journée Santé & Sécurité</h1>
             </div>
           </Link>
         )}
