@@ -44,7 +44,7 @@ export async function GET(
       orderBy: { order: 'asc' },
     })
 
-    const shuffledQuestions = questions.map(q => ({
+    const shuffledQuestions = questions.map((q: any) => ({
       ...q,
       choices: q.choices.sort(() => Math.random() - 0.5),
     }))

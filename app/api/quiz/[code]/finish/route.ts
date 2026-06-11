@@ -51,7 +51,7 @@ export async function POST(
       score,
       rank,
       totalQuestions: participant.answers.length,
-      correctAnswers: participant.answers.filter(a => a.choice?.isCorrect).length,
+      correctAnswers: participant.answers.filter((a: any) => a.choice?.isCorrect).length,
     })
   } catch (error) {
     console.error(error)
