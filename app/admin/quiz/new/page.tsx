@@ -53,7 +53,7 @@ export default function NewQuiz() {
       <Header backLink="/admin" backLabel="Dashboard" />
 
       {/* Main Content */}
-      <main className="container-base max-w-2xl py-12 flex-1">
+      <main className="container-base py-12 flex-1">
         <div className="mb-8 animate-slide-up">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Créer un Quiz</h1>
           <p className="text-gray-600">Configurez les paramètres de base de votre quiz</p>

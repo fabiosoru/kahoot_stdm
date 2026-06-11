@@ -72,7 +72,7 @@ export default function AdminLeaderboard() {
       <Header backLink={`/admin/quiz/${quizId}`} backLabel="Retour à l'édition" />
 
       {/* Main Content */}
-      <main className="container-base max-w-5xl py-12 flex-1">
+      <main className="container-base py-12 flex-1">
         <div className="mb-12 animate-slide-up">
           <h1 className="text-4xl sm:text-5xl font-black text-brand-blue mb-3 flex items-center gap-3">
             <IconSet.TrendingUp size={32} />

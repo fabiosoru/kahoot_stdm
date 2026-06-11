@@ -52,7 +52,7 @@ export default function QuizParticipants() {
       <Header backLink="/admin" backLabel="Retour" />
 
       {/* Main Content */}
-      <main className="container-base max-w-4xl py-8 flex-1">
+      <main className="container-base py-8 flex-1">
         <div className="mb-8 animate-slide-up">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Participants</h1>
           <p className="text-gray-600">Voir la liste des participants et leurs scores</p>

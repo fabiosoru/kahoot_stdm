@@ -52,6 +52,7 @@ export default function EditQuiz() {
     { text: '', isCorrect: false },
   ])
   const [copied, setCopied] = useState(false)
+  const [validating, setValidating] = useState(false)
 
   const shareLink = quiz
     ? `${typeof window !== 'undefined' ? window.location.origin : ''}/quiz/${quiz.accessCode}`
@@ -64,6 +65,34 @@ export default function EditQuiz() {
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
       console.error('Failed to copy:', err)
+    }
+  }
+
+  const handleValidateQuiz = async () => {
+    if (questions.length === 0) {
+      setError('Le quiz doit contenir au moins une question')
+      return
+    }
+
+    setValidating(true)
+    try {
+      const res = await fetch(`/api/admin/quiz/${quizId}/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Erreur lors de la validation')
+      }
+
+      setError('')
+      alert('Quiz validé avec succès ! Les participants peuvent maintenant y accéder.')
+      await fetchQuiz()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de la validation')
+    } finally {
+      setValidating(false)
     }
   }
 
@@ -157,7 +186,7 @@ export default function EditQuiz() {
       <Header backLink="/admin" />
 
       {/* Main Content */}
-      <main className="container-base max-w-4xl py-8 flex-1">
+      <main className="container-base py-8 flex-1">
         {quiz && (
           <>
             <div className="mb-8 animate-slide-up">
@@ -204,6 +233,15 @@ export default function EditQuiz() {
                     </span>
                     <span className="badge badge-success">{questions.length} questions</span>
                   </div>
+
+                  <button
+                    onClick={handleValidateQuiz}
+                    disabled={validating || questions.length === 0}
+                    className="btn btn-success w-full mt-4"
+                  >
+                    <IconSet.Check size={16} />
+                    {validating ? 'Validation...' : 'Valider le Quiz'}
+                  </button>
                 </div>
               </div>
             </div>
