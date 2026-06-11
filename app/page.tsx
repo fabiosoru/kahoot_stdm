@@ -59,7 +59,7 @@ export default function Home() {
 
           {/* Join Quiz Card */}
           <div className="card p-8 max-w-md mx-auto mb-16 bg-gradient-to-br from-white to-blue-50 border-2 border-brand-blue">
-            <h3 className="text-xl font-bold text-brand-blue mb-6">📝 Rejoindre un Quiz</h3>
+            <h3 className="text-xl font-bold text-brand-blue mb-6">Rejoindre un Quiz</h3>
             <div className="flex gap-2">
               <input
                 type="text"
