@@ -89,7 +89,7 @@ export default function QuizLanding() {
               <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
                 <IconSet.Award size={24} className="text-white" />
               </div>
-              <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
+              <h1 className="text-xl font-bold text-brand-blue">Journée Santé & Sécurité</h1>
             </Link>
           </div>
         </header>
@@ -122,7 +122,7 @@ export default function QuizLanding() {
             <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
               <IconSet.Award size={24} className="text-white" />
             </div>
-            <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
+            <h1 className="text-xl font-bold text-brand-blue">Journée Santé & Sécurité</h1>
           </Link>
         </div>
       </header>

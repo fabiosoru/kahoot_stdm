@@ -44,11 +44,18 @@ export default function AdminLogin() {
         <div className="container-base py-4 flex justify-between items-center">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
-              <IconSet.Award size={24} className="text-white" />
+              <Image
+              src="/champagne-logo.png"
+              alt="Champagne Mobilités"
+              width={50}
+              height={50}
+              className="h-12 w-auto"
+              priority
+            />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
-              <p className="text-xs text-gray-500">Santé & Sécurité</p>
+              <h1 className="text-xl font-bold text-brand-blue">Journée Santé & Sécurité</h1>
+              <p className="text-xs text-gray-500">GROUPE RATP</p>
             </div>
           </Link>
         </div>
