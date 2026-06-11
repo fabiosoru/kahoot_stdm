@@ -33,6 +33,9 @@ COPY --from=build /app/prisma ./prisma
 # Create data directory for SQLite
 RUN mkdir -p /app/data
 
+# Regenerate Prisma client in runtime to ensure it's properly initialized
+RUN npx prisma generate --skip-engine-check || npx prisma generate
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
