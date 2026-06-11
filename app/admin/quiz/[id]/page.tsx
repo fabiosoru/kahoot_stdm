@@ -69,17 +69,22 @@ export default function EditQuiz() {
   }
 
   const handleValidateQuiz = async () => {
+    console.log('Validate clicked, questions count:', questions.length)
+
     if (questions.length === 0) {
-      setError('Le quiz doit contenir au moins une question')
+      setError('Le quiz doit contenir au least une question')
       return
     }
 
     setValidating(true)
     try {
+      console.log('Fetching validate API...')
       const res = await fetch(`/api/admin/quiz/${quizId}/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       })
+
+      console.log('Response status:', res.status)
 
       if (!res.ok) {
         const data = await res.json()
@@ -87,9 +92,10 @@ export default function EditQuiz() {
       }
 
       setError('')
-      alert('Quiz validé avec succès ! Les participants peuvent maintenant y accéder.')
-      router.push('/admin')
+      console.log('Redirecting to admin...')
+      setTimeout(() => router.push('/admin'), 500)
     } catch (err) {
+      console.error('Error:', err)
       setError(err instanceof Error ? err.message : 'Erreur lors de la validation')
     } finally {
       setValidating(false)
