@@ -88,7 +88,7 @@ export default function EditQuiz() {
 
       setError('')
       alert('Quiz validé avec succès ! Les participants peuvent maintenant y accéder.')
-      await fetchQuiz()
+      router.push('/admin')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la validation')
     } finally {
