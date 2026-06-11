@@ -49,6 +49,21 @@ export default function EditQuiz() {
     { text: '', isCorrect: false },
     { text: '', isCorrect: false },
   ])
+  const [copied, setCopied] = useState(false)
+
+  const shareLink = quiz
+    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/quiz/${quiz.accessCode}`
+    : ''
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(shareLink)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
 
   const fetchQuiz = useCallback(async () => {
     try {
@@ -161,12 +176,49 @@ export default function EditQuiz() {
           <>
             <div className="mb-8 animate-slide-up">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">{quiz.title}</h1>
-              <p className="text-gray-600">{quiz.description}</p>
-              <div className="mt-4 flex gap-4">
-                <span className="badge badge-info">
-                  Code: <code className="font-mono font-bold">{quiz.accessCode}</code>
-                </span>
-                <span className="badge badge-success">{questions.length} questions</span>
+              <p className="text-gray-600 mb-6">{quiz.description}</p>
+
+              {/* Share Link Section */}
+              <div className="card p-6 mb-8 bg-gradient-to-br from-brand-blue from-10% to-transparent border-2 border-brand-blue">
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <h3 className="text-sm font-semibold text-brand-blue mb-2 flex items-center gap-2">
+                      <IconSet.Share2 size={16} />
+                      Lien d'accès pour les participants
+                    </h3>
+                    <div className="flex gap-2 items-center bg-white rounded-lg p-3 border border-gray-200">
+                      <code className="flex-1 font-mono text-sm text-gray-700 break-all">{shareLink}</code>
+                      <button
+                        onClick={copyToClipboard}
+                        className={`btn btn-sm flex-shrink-0 ${
+                          copied
+                            ? 'btn-success'
+                            : 'btn-outline'
+                        }`}
+                        title="Copier le lien"
+                      >
+                        {copied ? (
+                          <>
+                            <IconSet.Check size={14} />
+                            Copié !
+                          </>
+                        ) : (
+                          <>
+                            <IconSet.Copy size={14} />
+                            Copier
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 flex-wrap text-xs">
+                    <span className="badge badge-info">
+                      Code: <code className="font-mono font-bold">{quiz.accessCode}</code>
+                    </span>
+                    <span className="badge badge-success">{questions.length} questions</span>
+                  </div>
+                </div>
               </div>
             </div>
 
