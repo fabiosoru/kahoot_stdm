@@ -130,7 +130,12 @@ body {
 
 /* Professional header */
 .app-header {
-  @apply bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40;
+  @apply bg-white border-b border-gray-200 shadow-sm fixed top-0 left-0 right-0 z-50 h-16;
+}
+
+/* Adjust main content for fixed header */
+body {
+  padding-top: 4rem;
 }
 
 /* Professional container */
