@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -26,25 +25,18 @@ export default function Home() {
       <section className="py-16 sm:py-24">
         <div className="container-base max-w-3xl mx-auto text-center animate-slide-up">
           {/* Logo Images */}
-          <div className="flex flex-col items-center gap-0">
+          <div className="flex flex-col items-center -mt-15" style={{ gap: 0 }}>
             <Image
               src="/logo-journee-sr.png"
               alt="Journée Santé & Sécurité"
               width={400}
               height={200}
-              className="h-auto w-full max-w-2xl m-0"
-              priority
-            />
-            <Image
-              src="/affiche.png"
-              alt="Affiche Journée Santé & Sécurité"
-              width={300}
-              height={300}
-              className="h-auto w-full max-w-2xl m-0 -mt-1"
+              className="h-auto w-full max-w-4xl"
+              style={{ margin: 0, display: 'block' }}
               priority
             />
           </div>
-          <p className="text-lg text-gray-600 mb-10 font-medium">
+          <p className="text-lg text-gray-600 mb-10 font-medium -mt-10">
             Testez vos connaissances avec un quiz interactif et amusant !
           </p>
 

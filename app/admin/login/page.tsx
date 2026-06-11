@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { IconSet } from '@/components/Icon'
+import Image from 'next/image'
 
 export default function AdminLogin() {
   const router = useRouter()
@@ -47,10 +48,16 @@ export default function AdminLogin() {
       <main className="flex-1 flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center animate-slide-up">
-            <div className="w-16 h-16 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center mx-auto mb-4">
-              <IconSet.Settings size={32} className="text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900">Panneau Admin</h1>
+            <Image
+              src="/affiche.png"
+              alt="Affiche Journée Santé & Sécurité"
+              width={300}
+              height={300}
+              className="h-auto w-full max-w-2xl"
+              style={{ margin: 0, display: 'block', marginTop: '-5vh', marginBottom: '-5vh' }}
+              priority
+            />
+            <h1 className="text-3xl font-bold text-gray-900">Accès Administrateur</h1>
             <p className="text-gray-600 mt-2">Gérez vos quiz et participants</p>
           </div>
 
