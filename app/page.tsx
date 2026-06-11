@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { IconSet } from '@/components/Icon'
 
 export default function Home() {
   const router = useRouter()
@@ -10,88 +11,108 @@ export default function Home() {
 
   const handleCodeSubmit = () => {
     if (code.trim()) {
-      router.push(`/quiz/${code}`)
+      router.push(`/quiz/${code.toUpperCase()}`)
     }
   }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-20 right-20 w-64 h-64 bg-brand-green opacity-10 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-32 left-20 w-56 h-56 bg-brand-green opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-
-      <div className="max-w-4xl w-full relative z-10">
-        {/* Main Hero */}
-        <div className="text-center mb-16 animate-slide-in">
-          <div className="text-8xl mb-6 animate-bounce-in">🎯</div>
-          <h1 className="text-7xl font-black text-white mb-4">KAHOOT</h1>
-          <p className="text-3xl font-bold text-brand-green mb-2">Journée Santé & Sécurité</p>
-          <p className="text-xl text-white opacity-90">Champagne Mobilités & STDM</p>
-        </div>
-
-        {/* Description */}
-        <div className="kahoot-card p-12 mb-12 animate-bounce-in">
-          <h2 className="text-3xl font-black text-brand-blue mb-6">Bienvenue ! 👋</h2>
-          <p className="text-lg text-gray-700 leading-relaxed mb-6">
-            Testez vos connaissances sur la santé et la sécurité au travail. Participez au quiz, découvrez votre score et grimpez le classement !
-          </p>
-          <div className="grid md:grid-cols-3 gap-6 mt-8">
-            <div className="bg-blue-50 rounded-xl p-6 border-l-4 border-brand-blue">
-              <div className="text-4xl mb-3">❓</div>
-              <p className="font-black text-brand-blue text-lg">Multiple Questions</p>
-              <p className="text-gray-600 text-sm mt-2">Répondez à des questions sur la santé</p>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="app-header">
+        <div className="container-base py-4 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
+              <IconSet.Award size={24} className="text-white" />
             </div>
-            <div className="bg-green-50 rounded-xl p-6 border-l-4 border-brand-green">
-              <div className="text-4xl mb-3">⏱️</div>
-              <p className="font-black text-brand-green text-lg">Temps Limité</p>
-              <p className="text-gray-600 text-sm mt-2">Réagissez vite pour chaque question</p>
-            </div>
-            <div className="bg-yellow-50 rounded-xl p-6 border-l-4 border-yellow-500">
-              <div className="text-4xl mb-3">🏆</div>
-              <p className="font-black text-yellow-600 text-lg">Classement Live</p>
-              <p className="text-gray-600 text-sm mt-2">Comparez vos scores en temps réel</p>
+            <div>
+              <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
+              <p className="text-xs text-gray-500">Santé & Sécurité</p>
             </div>
           </div>
-        </div>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col md:flex-row gap-6 justify-center animate-slide-in">
-          <Link href="/admin/login" className="flex-1">
-            <button className="w-full kahoot-button-blue text-2xl py-6 font-black hover:shadow-2xl">
-              🔐 Admin - Créer un Quiz
+          <Link href="/admin/login">
+            <button className="btn btn-outline btn-sm">
+              <IconSet.Settings size={16} />
+              Admin
             </button>
           </Link>
-          <div className="flex-1">
-            <p className="text-white text-center text-sm font-bold mb-3">
-              OU entrez votre code participant
-            </p>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-16 sm:py-24">
+        <div className="container-base max-w-3xl mx-auto text-center animate-slide-up">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            Testez vos connaissances
+          </h2>
+          <p className="text-lg text-gray-600 mb-12">
+            Participez à nos quiz interactifs et mesurez votre progression avec un système de scoring en temps réel.
+          </p>
+
+          {/* Join Quiz Card */}
+          <div className="card p-8 max-w-md mx-auto mb-16">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Rejoindre un Quiz</h3>
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="Ex: SANTE2026"
+                placeholder="Code d&apos;accès"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleCodeSubmit()
-                  }
-                }}
-                className="flex-1 px-6 py-4 border-4 border-brand-green rounded-xl font-black text-lg text-center bg-white text-brand-blue placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-brand-green"
+                onKeyDown={(e) => e.key === 'Enter' && handleCodeSubmit()}
+                className="input flex-1"
               />
               <button
                 onClick={handleCodeSubmit}
-                className="kahoot-button-green px-6 font-black"
+                className="btn btn-primary btn-sm"
               >
-                ▶️
+                <IconSet.ChevronRight size={16} />
               </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              Ex: <code className="bg-gray-100 px-2 py-1 rounded text-brand-blue font-mono">SANTE2026</code>
+            </p>
+          </div>
+
+          {/* Features */}
+          <div className="grid sm:grid-cols-3 gap-6">
+            <div className="card p-6">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <IconSet.Clock size={24} className="text-brand-blue" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-2">Timer par Question</h4>
+              <p className="text-sm text-gray-600">
+                Répondez dans le temps imparti pour chaque question
+              </p>
+            </div>
+
+            <div className="card p-6">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <IconSet.TrendingUp size={24} className="text-brand-green" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-2">Score Automatique</h4>
+              <p className="text-sm text-gray-600">
+                Votre score est calculé instantanément à la fin du quiz
+              </p>
+            </div>
+
+            <div className="card p-6">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <IconSet.BarChart3 size={24} className="text-brand-blue" />
+              </div>
+              <h4 className="font-semibold text-gray-900 mb-2">Classement Live</h4>
+              <p className="text-sm text-gray-600">
+                Voyez votre rang parmi les autres participants
+              </p>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Footer */}
-        <p className="text-center text-white text-sm opacity-75 mt-12 font-semibold">
-          🚌 Groupe RATP Dev | 2ème édition | 17 juin 2026
-        </p>
-      </div>
+      {/* Footer */}
+      <footer className="border-t border-gray-200 py-8 mt-16">
+        <div className="container-base text-center text-sm text-gray-600">
+          <p>Groupe RATP Dev • Journée Santé & Sécurité • 2026</p>
+        </div>
+      </footer>
     </div>
   )
 }

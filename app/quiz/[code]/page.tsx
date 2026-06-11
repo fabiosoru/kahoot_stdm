@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import Link from 'next/link'
+import { IconSet } from '@/components/Icon'
 
 interface Quiz {
   id: string
@@ -69,9 +71,10 @@ export default function QuizLanding() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center">
-        <div className="animate-bounce-in">
-          <div className="text-white text-3xl font-black">⏳ Chargement du quiz...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin text-4xl mb-4">⟳</div>
+          <p className="text-gray-600 font-semibold">Chargement du quiz...</p>
         </div>
       </div>
     )
@@ -79,104 +82,169 @@ export default function QuizLanding() {
 
   if (!quiz) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center p-4">
-        <div className="kahoot-card p-10 max-w-md w-full text-center animate-bounce-in">
-          <div className="text-5xl mb-4">❌</div>
-          <h1 className="text-3xl font-black text-red-600 mb-4">Quiz non trouvé</h1>
-          <p className="text-gray-600 text-lg">{error}</p>
-        </div>
+      <div className="min-h-screen bg-white">
+        <header className="app-header">
+          <div className="container-base py-4">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
+                <IconSet.Award size={24} className="text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
+            </Link>
+          </div>
+        </header>
+
+        <main className="container-base flex items-center justify-center py-24">
+          <div className="card p-12 max-w-md w-full text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <IconSet.AlertCircle size={32} className="text-red-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Quiz non trouvé</h1>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <Link href="/">
+              <button className="btn btn-primary w-full">
+                <IconSet.ChevronRight size={16} className="rotate-180" />
+                Retour à l&apos;accueil
+              </button>
+            </Link>
+          </div>
+        </main>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated background */}
-      <div className="absolute top-20 right-20 w-48 h-48 bg-brand-green opacity-10 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 left-20 w-48 h-48 bg-brand-green opacity-10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="app-header">
+        <div className="container-base py-4">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-green rounded-lg flex items-center justify-center">
+              <IconSet.Award size={24} className="text-white" />
+            </div>
+            <h1 className="text-xl font-bold text-brand-blue">Quiz Hub</h1>
+          </Link>
+        </div>
+      </header>
 
-      <div className="max-w-2xl w-full relative z-10">
-        {/* Quiz Header */}
-        <div className="text-center mb-10 animate-slide-in">
-          <div className="text-6xl mb-4">🎯</div>
-          <h1 className="text-5xl font-black text-white mb-3">{quiz.title}</h1>
+      {/* Main Content */}
+      <main className="container-base max-w-2xl py-12">
+        <div className="mb-8 animate-slide-up">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{quiz.title}</h1>
           {quiz.description && (
-            <p className="text-brand-green text-xl font-bold">{quiz.description}</p>
+            <p className="text-gray-600">{quiz.description}</p>
           )}
         </div>
 
-        {/* Main Card */}
-        <div className="kahoot-card p-10 animate-bounce-in">
-          {/* Quiz Info */}
-          <div className="bg-gradient-to-r from-brand-blue to-blue-800 text-white rounded-2xl p-8 mb-10 text-center">
-            <div className="text-5xl font-black mb-3">{quiz.questionCount}</div>
-            <p className="text-xl font-bold">Questions à répondre</p>
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="card p-6 text-center animate-slide-up">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <IconSet.Clock size={24} className="text-brand-blue" />
+            </div>
+            <p className="text-sm text-gray-600">Questions</p>
+            <p className="text-3xl font-bold text-gray-900">{quiz.questionCount}</p>
           </div>
 
-          {/* Form */}
+          <div className="card p-6 text-center animate-slide-up" style={{ animationDelay: '50ms' }}>
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <IconSet.TrendingUp size={24} className="text-brand-green" />
+            </div>
+            <p className="text-sm text-gray-600">Points</p>
+            <p className="text-3xl font-bold text-gray-900">{quiz.questionCount * 100}</p>
+          </div>
+
+          <div className="card p-6 text-center animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+              <IconSet.Users size={24} className="text-brand-blue" />
+            </div>
+            <p className="text-sm text-gray-600">Participants</p>
+            <p className="text-3xl font-bold text-gray-900">?</p>
+          </div>
+        </div>
+
+        {/* Form Card */}
+        <div className="card p-8 animate-slide-up">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Votre Profil</h2>
+
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* First Name */}
             <div>
-              <label className="block text-brand-blue font-black text-lg mb-3">
-                Prénom
-              </label>
+              <label className="label">Prénom *</label>
               <input
                 type="text"
-                placeholder="Ex: Jean"
+                required
+                placeholder="Ex: Marie"
                 value={formData.firstName}
                 onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                className="w-full px-6 py-4 border-4 border-brand-blue rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-green text-lg font-semibold"
-                required
+                className="input"
               />
             </div>
 
+            {/* Last Name */}
             <div>
-              <label className="block text-brand-blue font-black text-lg mb-3">
-                Nom
-              </label>
+              <label className="label">Nom *</label>
               <input
                 type="text"
+                required
                 placeholder="Ex: Dupont"
                 value={formData.lastName}
                 onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                className="w-full px-6 py-4 border-4 border-brand-blue rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-green text-lg font-semibold"
-                required
+                className="input"
               />
             </div>
 
+            {/* Company */}
             <div>
-              <label className="block text-brand-blue font-black text-lg mb-3">
-                Entreprise
-              </label>
+              <label className="label">Entreprise *</label>
               <select
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="w-full px-6 py-4 border-4 border-brand-blue rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-green text-lg font-semibold"
+                className="input"
               >
-                <option value="Champagne Mobilités">🚌 Champagne Mobilités</option>
-                <option value="STDM">🚍 STDM</option>
+                <option value="Champagne Mobilités">Champagne Mobilités</option>
+                <option value="STDM">STDM</option>
               </select>
             </div>
 
+            {/* Error */}
             {error && (
-              <div className="bg-red-100 border-4 border-red-500 text-red-700 px-6 py-4 rounded-xl font-bold text-center animate-shake">
-                ⚠️ {error}
+              <div className="alert alert-error flex items-start gap-3">
+                <IconSet.AlertCircle size={20} className="flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold">Erreur</p>
+                  <p className="text-sm">{error}</p>
+                </div>
               </div>
             )}
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={submitting}
-              className="w-full kahoot-button-green text-2xl py-5 font-black disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn btn-primary btn-lg disabled:opacity-50"
             >
-              {submitting ? '⏳ Chargement...' : '🚀 Commencer le Quiz'}
+              {submitting ? (
+                <>
+                  <span className="animate-spin">⟳</span>
+                  Démarrage...
+                </>
+              ) : (
+                <>
+                  <IconSet.ChevronRight size={18} />
+                  Commencer le Quiz
+                </>
+              )}
             </button>
           </form>
-
-          <p className="text-center text-gray-500 text-sm mt-8 font-semibold">
-            ⏱️ Préparez-vous ! Le quiz va commencer.
-          </p>
         </div>
-      </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 py-6 mt-16">
+        <div className="container-base text-center text-sm text-gray-600">
+          <p>© 2026 Groupe RATP Dev • Tous droits réservés</p>
+        </div>
+      </footer>
     </div>
   )
 }
