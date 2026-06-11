@@ -18,8 +18,8 @@ ENV NODE_ENV=production
 ENV PORT=3000
 EXPOSE 3000
 
-# Install Prisma runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends libssl3 ca-certificates && rm -rf /var/lib/apt/lists/*
+# Install Prisma runtime dependencies and sqlite3
+RUN apt-get update && apt-get install -y --no-install-recommends libssl3 ca-certificates sqlite3 && rm -rf /var/lib/apt/lists/*
 
 # Copy runtime dependencies
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -36,9 +36,13 @@ RUN mkdir -p /app/data
 # Regenerate Prisma client in runtime to ensure it's properly initialized
 RUN npx prisma generate --skip-engine-check || npx prisma generate
 
+# Copy start script
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
 # Start application
-CMD ["npm", "start"]
+CMD ["/app/start.sh"]
