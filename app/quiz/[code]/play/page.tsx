@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { IconSet } from '@/components/Icon'
 
 interface Choice {
   id: string
@@ -103,7 +104,7 @@ export default function QuizPlay() {
 
       setFeedback({
         isCorrect: true,
-        message: '✅ Réponse enregistrée !',
+        message: 'Réponse enregistrée !',
       })
 
       setTimeout(() => handleNext(), 1500)
@@ -146,9 +147,10 @@ export default function QuizPlay() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center">
-        <div className="animate-bounce-in">
-          <div className="text-white text-3xl font-black">⏳ Préparation du quiz...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin inline-block w-12 h-12 border-4 border-gray-300 border-t-brand-blue rounded-full mb-4"></div>
+          <p className="text-gray-600 font-semibold">Préparation du quiz...</p>
         </div>
       </div>
     )
@@ -156,10 +158,13 @@ export default function QuizPlay() {
 
   if (questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center p-4">
-        <div className="kahoot-card p-10 max-w-md text-center">
-          <div className="text-5xl mb-4">❓</div>
-          <h1 className="text-3xl font-black text-gray-800">Aucune question</h1>
+      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+        <div className="card p-10 max-w-md text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <IconSet.AlertCircle size={32} className="text-gray-400" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Aucune question</h1>
+          <p className="text-gray-600 mt-2">Ce quiz n'a pas encore de questions.</p>
         </div>
       </div>
     )
@@ -167,81 +172,83 @@ export default function QuizPlay() {
 
   const question = questions[currentIndex]
   const progress = ((currentIndex + 1) / questions.length) * 100
-  const timerColor = timeLeft <= 5 ? 'timer-low' : timeLeft <= 10 ? 'timer-warning' : 'timer-safe'
+  const timerColor = timeLeft <= 5 ? 'text-red-600' : timeLeft <= 10 ? 'text-orange-600' : 'text-brand-green'
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-4 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       <Header backLink={`/quiz/${code}`} showAdminButton={true} />
 
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-white font-black text-2xl">
-            Question {currentIndex + 1}/{questions.length}
-          </span>
-          <div className={`text-4xl font-black font-mono ${timerColor}`}>
-            {timeLeft}s
+      <main className="flex-1 container-base py-8 max-w-4xl">
+        {/* Header avec progression */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+              Question {currentIndex + 1} sur {questions.length}
+            </span>
+            <div className={`text-4xl font-black font-mono ${timerColor} transition-colors`}>
+              {timeLeft}s
+            </div>
+          </div>
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-brand-blue to-brand-green h-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
-        {/* Progress Bar */}
-        <div className="w-full bg-black bg-opacity-30 rounded-full h-3 overflow-hidden border-2 border-brand-green">
-          <div
-            className="bg-gradient-to-r from-brand-green to-green-400 h-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
 
-      {/* Question Card */}
-      <div className="kahoot-card p-8 mb-8 flex-shrink-0 animate-slide-in">
-        <h2 className="text-3xl font-black text-brand-blue mb-6 leading-tight">
-          {question.text}
-        </h2>
-        {question.imageUrl && (
-          <img
-            src={question.imageUrl}
-            alt="Question"
-            className="w-full rounded-xl mb-6 max-h-64 object-cover shadow-lg"
-          />
+        {/* Question Card */}
+        <div className="card p-8 mb-8 animate-slide-up">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
+            {question.text}
+          </h2>
+          {question.imageUrl && (
+            <img
+              src={question.imageUrl}
+              alt="Question"
+              className="w-full rounded-xl mb-6 max-h-64 object-cover shadow-lg"
+            />
+          )}
+        </div>
+
+        {/* Choices Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {question.choices.map((choice, idx) => {
+            const colors = [
+              'from-brand-blue to-blue-600',
+              'from-brand-green to-green-600',
+              'from-orange-500 to-orange-600',
+              'from-red-500 to-red-600',
+            ]
+            const isSelected = selectedChoice === choice.id
+            const bgColor = colors[idx % 4]
+
+            return (
+              <button
+                key={choice.id}
+                onClick={() => handleAnswer(choice.id)}
+                disabled={answered}
+                className={`relative rounded-xl p-6 font-semibold text-white text-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg bg-gradient-to-r ${bgColor} ${
+                  isSelected ? 'ring-4 ring-white scale-105' : 'hover:shadow-xl'
+                } disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100`}
+              >
+                <div className="text-left">{choice.text}</div>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Feedback */}
+        {feedback && (
+          <div className="text-center animate-slide-up mb-8">
+            <div className="inline-flex items-center gap-3 bg-green-50 border-2 border-green-600 text-green-700 px-6 py-4 rounded-xl font-semibold">
+              <IconSet.Check size={24} />
+              <span>{feedback.message}</span>
+            </div>
+          </div>
         )}
-      </div>
-
-      {/* Choices Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-        {question.choices.map((choice, idx) => {
-          const colors = [
-            'bg-blue-500', // Bleu
-            'bg-red-500', // Rouge
-            'bg-green-500', // Vert
-            'bg-yellow-500', // Jaune
-          ]
-          const isSelected = selectedChoice === choice.id
-          const bgColor = colors[idx % 4]
-
-          return (
-            <button
-              key={choice.id}
-              onClick={() => handleAnswer(choice.id)}
-              disabled={answered}
-              className={`relative rounded-2xl p-6 font-black text-white text-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-xl ${
-                isSelected
-                  ? `${bgColor} scale-105 ring-4 ring-white`
-                  : `${bgColor} hover:brightness-110`
-              } disabled:opacity-75 disabled:cursor-not-allowed`}
-            >
-              <div className="text-3xl mb-3">{['🔵', '🔴', '🟢', '🟡'][idx % 4]}</div>
-              <div className="text-left">{choice.text}</div>
-            </button>
-          )
-        })}
-      </div>
-
-      {/* Feedback */}
-      {feedback && (
-        <div className="mt-6 text-center animate-bounce-in">
-          <div className="text-5xl mb-2">✅</div>
-          <p className="text-white text-2xl font-black">{feedback.message}</p>
-        </div>
-      )}
+      </main>
 
       <Footer compact={true} />
     </div>
