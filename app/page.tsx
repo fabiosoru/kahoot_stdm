@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { IconSet } from '@/components/Icon'
 
 export default function Home() {
@@ -17,32 +18,8 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/affiche.png"
-              alt="Champagne Mobilités"
-              width={50}
-              height={50}
-              className="h-12 w-auto"
-              priority
-            />
-            <div>
-              <h1 className="text-lg font-bold text-brand-blue">Journée Santé & Sécurité</h1>
-              <p className="text-xs text-gray-500">Champagne Mobilités</p>
-            </div>
-          </Link>
-          <Link href="/admin/login">
-            <button className="btn btn-outline btn-sm">
-              <IconSet.Settings size={16} />
-              Admin
-            </button>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      <Header showAdminButton={true} />
 
       {/* Hero Section */}
       <section className="py-16 sm:py-24">
@@ -116,12 +93,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-8 mt-16">
-        <div className="container-base text-center text-sm text-gray-600">
-          <p>SORU Fabio • Journée Santé & Sécurité • 2026</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

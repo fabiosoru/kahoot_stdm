@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { IconSet } from '@/components/Icon'
 
 export default function AdminLogin() {
@@ -40,25 +41,7 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <header className="app-header">
-        <div className="container-base py-4 flex justify-between items-center">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/affiche.png"
-              alt="Champagne Mobilités"
-              width={40}
-              height={40}
-              className="h-10 w-auto"
-              priority
-            />
-            <div>
-              <h1 className="text-sm font-bold text-brand-blue">Journée Santé</h1>
-              <p className="text-xs text-gray-500">& Sécurité</p>
-            </div>
-          </Link>
-        </div>
-      </header>
+      <Header />
 
       {/* Login Form */}
       <main className="flex-1 flex items-center justify-center py-12 px-4">
@@ -149,12 +132,7 @@ export default function AdminLogin() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 py-6">
-        <div className="container-base text-center text-sm text-gray-600">
-          <p>© 2026 SORU Fabio • Tous droits réservés</p>
-        </div>
-      </footer>
+      <Footer compact={true} />
     </div>
   )
 }
