@@ -12,6 +12,7 @@ const config: Config = {
         brand: {
           blue: '#003F90',
           green: '#44C3AF',
+          orange: '#FF8C42',
         }
       },
       fontFamily: {
