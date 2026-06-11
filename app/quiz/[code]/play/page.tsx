@@ -178,7 +178,7 @@ export default function QuizPlay() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       <Header backLink={`/quiz/${code}`} showAdminButton={true} />
 
-      <main className="flex-1 container-base py-8 max-w-4xl">
+      <main className="flex-1 container-base py-8">
         {/* Header avec progression */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">

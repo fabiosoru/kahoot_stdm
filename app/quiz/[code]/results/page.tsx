@@ -69,59 +69,49 @@ export default function QuizResults() {
     return 'CONTINUEZ !'
   }
 
-  const getEncouragementColor = (rank: number, total: number) => {
-    const percentage = (rank / total) * 100
-    if (percentage <= 10) return 'text-red-600'
-    if (percentage <= 25) return 'text-brand-green'
-    if (percentage <= 50) return 'text-brand-blue'
-    return 'text-orange-600'
-  }
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin inline-block w-12 h-12 border-4 border-white border-t-transparent rounded-full mb-4"></div>
-          <p className="text-white text-xl font-black">Calcul des résultats...</p>
+          <div className="animate-spin inline-block w-12 h-12 border-4 border-gray-300 border-t-brand-blue rounded-full mb-4"></div>
+          <p className="text-gray-600 font-semibold">Calcul des résultats...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 p-4 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col">
       <Header backLink={`/quiz/${code}`} showAdminButton={true} />
 
-      <div className="max-w-4xl mx-auto flex-1 flex flex-col">
+      <main className="flex-1 container-base py-12">
         {/* Results Header */}
         {results && (
-          <div className="text-center mb-10 animate-slide-in">
-            <h1 className="text-5xl font-black text-white mb-8">Quiz Terminé !</h1>
+          <div className="text-center mb-12 animate-slide-up">
+            <h1 className="text-5xl sm:text-6xl font-black text-brand-blue mb-8">Quiz Terminé !</h1>
 
             {/* Score Card */}
-            <div className="kahoot-card p-10 mb-8 bg-gradient-to-br from-white to-blue-50 animate-bounce-in">
-              <div className="mb-6">
-                <div className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green mb-3">
+            <div className="card p-10 mb-8 bg-gradient-to-br from-white to-blue-50 border-2 border-brand-blue max-w-2xl mx-auto">
+              <div className="mb-8">
+                <div className="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-green mb-3">
                   {results.score}
                 </div>
-                <p className="text-2xl font-black text-gray-700">points</p>
+                <p className="text-xl font-semibold text-gray-600">points</p>
               </div>
 
-              <div className="bg-gradient-to-r from-brand-blue to-blue-600 text-white rounded-2xl p-6 mb-6">
-                <p className="text-lg font-bold mb-2">Bonnes réponses</p>
+              <div className="bg-gradient-to-r from-brand-blue to-blue-600 text-white rounded-xl p-6 mb-6">
+                <p className="text-sm font-bold mb-2 opacity-90">Bonnes réponses</p>
                 <p className="text-4xl font-black">
                   {results.correctAnswers} / {results.totalQuestions}
                 </p>
               </div>
 
               {results.rank && (
-                <div className="bg-gradient-to-r from-brand-green to-green-500 text-white rounded-2xl p-8">
-                  <p className="text-lg font-bold mb-2">Votre Classement</p>
-                  <p className="text-5xl font-black mb-4">
-                    {getRankBadge(results.rank.rank)}
-                  </p>
-                  <p className="text-xl font-bold">sur {results.rank.total} participants</p>
-                  <p className="text-2xl font-black mt-4">{getEncouragement(results.rank.rank, results.rank.total)}</p>
+                <div className="bg-gradient-to-r from-brand-green to-green-600 text-white rounded-xl p-8">
+                  <p className="text-sm font-bold mb-2 opacity-90">Votre Classement</p>
+                  <p className="text-5xl font-black mb-3">{getRankBadge(results.rank.rank)}</p>
+                  <p className="text-lg font-semibold mb-3">sur {results.rank.total} participants</p>
+                  <p className="text-2xl font-black">{getEncouragement(results.rank.rank, results.rank.total)}</p>
                 </div>
               )}
             </div>
@@ -129,8 +119,8 @@ export default function QuizResults() {
         )}
 
         {/* Leaderboard */}
-        <div className="kahoot-card p-10 mb-8 animate-slide-in">
-          <h2 className="text-4xl font-black text-brand-blue mb-8 flex items-center gap-3">
+        <div className="card p-8 mb-12 max-w-4xl mx-auto">
+          <h2 className="text-3xl font-black text-brand-blue mb-8 flex items-center gap-3">
             <IconSet.Award size={32} />
             Classement en direct
           </h2>
@@ -144,28 +134,28 @@ export default function QuizResults() {
               leaderboard.map((entry, idx) => (
                 <div
                   key={entry.id}
-                  className={`rounded-xl p-4 flex items-center justify-between transition-all duration-300 ${
+                  className={`rounded-xl p-5 flex items-center justify-between transition-all duration-300 ${
                     idx === 0
-                      ? 'bg-gradient-to-r from-yellow-400 to-yellow-200 border-4 border-yellow-500 scale-105'
+                      ? 'bg-gradient-to-r from-yellow-400 to-yellow-300 border-2 border-yellow-500 scale-105 shadow-lg'
                       : idx === 1
-                      ? 'bg-gradient-to-r from-gray-300 to-gray-200 border-4 border-gray-400'
+                      ? 'bg-gradient-to-r from-gray-400 to-gray-300 border-2 border-gray-500'
                       : idx === 2
-                      ? 'bg-gradient-to-r from-orange-300 to-orange-200 border-4 border-orange-400'
-                      : 'bg-gray-100 border-4 border-gray-300'
+                      ? 'bg-gradient-to-r from-orange-400 to-orange-300 border-2 border-orange-500'
+                      : 'bg-gray-100 border-2 border-gray-300'
                   }`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center flex-shrink-0">
-                      <span className="text-2xl font-black text-gray-800">#{idx + 1}</span>
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow">
+                      <span className="text-xl font-black text-gray-800">#{idx + 1}</span>
                     </div>
                     <div className="text-left">
-                      <p className="font-black text-lg">
+                      <p className="font-bold text-lg text-gray-900">
                         {entry.firstName} {entry.lastName}
                       </p>
-                      <p className="text-sm font-bold opacity-75">{entry.score} points</p>
+                      <p className="text-sm font-semibold opacity-80">{entry.score} points</p>
                     </div>
                   </div>
-                  <span className="text-3xl font-black text-brand-blue">{entry.score} pts</span>
+                  <span className="text-3xl font-black text-gray-900">{entry.score}</span>
                 </div>
               ))
             )}
@@ -173,19 +163,21 @@ export default function QuizResults() {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-4 justify-center mb-8 animate-slide-in">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-slide-up">
           <Link href={`/leaderboard/${code}`}>
-            <button className="kahoot-button-green text-xl px-10 py-4">
-              📊 Voir le Classement Complet
+            <button className="btn btn-primary px-8 py-3 text-lg">
+              <IconSet.BarChart3 size={20} />
+              Classement Complet
             </button>
           </Link>
           <Link href="/">
-            <button className="kahoot-button bg-gray-600 text-white text-xl px-10 py-4 hover:bg-gray-700">
-              🏠 Accueil
+            <button className="btn btn-outline px-8 py-3 text-lg">
+              <IconSet.Home size={20} />
+              Accueil
             </button>
           </Link>
         </div>
-      </div>
+      </main>
 
       <Footer compact={true} />
     </div>
