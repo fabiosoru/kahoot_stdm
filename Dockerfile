@@ -30,6 +30,10 @@ COPY --from=build /app/public ./public
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/prisma ./prisma
 
+# Copy entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Create data directory
 RUN mkdir -p /app/data
 
@@ -110,11 +114,11 @@ CREATE INDEX IF NOT EXISTS idx_answers_questionId ON answers(questionId);
 SQL
 
 # Regenerate Prisma client in runtime to ensure it's properly initialized
-RUN npx prisma generate --skip-engine-check || npx prisma generate
+RUN npx prisma generate
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
-# Start application
-CMD ["npm", "start"]
+# Start application with entrypoint script
+ENTRYPOINT ["/app/entrypoint.sh"]
