@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kahoot-stdm
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "file:/app/data/prod.db"
+      PORT: 3000
+    volumes:
+      # Persist database file
+      - kahoot-data:/app/data
+      # Optional: volume for logs
+      - kahoot-logs:/app/.next
+    restart: unless-stopped
+    networks:
+      - kahoot-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  kahoot-data:
+    driver: local
+  kahoot-logs:
+    driver: local
+
+networks:
+  kahoot-network:
+    driver: bridge
