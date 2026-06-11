@@ -7,7 +7,7 @@ export async function POST(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const isAdmin = await checkAdminSession(request)
+    const isAdmin = await checkAdminSession()
     if (!isAdmin) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }

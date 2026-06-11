@@ -96,6 +96,29 @@ export default function EditQuiz() {
     }
   }
 
+  const handleDeleteQuiz = async () => {
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce quiz ? Cette action est irréversible.')) {
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/admin/quiz/${quizId}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Erreur lors de la suppression')
+      }
+
+      alert('Quiz supprimé avec succès')
+      router.push('/admin')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur lors de la suppression')
+    }
+  }
+
   const fetchQuiz = useCallback(async () => {
     try {
       setLoading(true)
@@ -194,7 +217,7 @@ export default function EditQuiz() {
               <p className="text-gray-600 mb-6">{quiz.description}</p>
 
               {/* Share Link Section */}
-              <div className="card p-6 mb-8 bg-gradient-to-br from-brand-blue from-10% to-transparent border-2 border-brand-blue">
+              <div className="card p-6 mb-8 border-2 border-brand-blue">
                 <div className="flex flex-col gap-4">
                   <div>
                     <h3 className="text-sm font-semibold text-brand-blue mb-2 flex items-center gap-2">
@@ -234,14 +257,23 @@ export default function EditQuiz() {
                     <span className="badge badge-success">{questions.length} questions</span>
                   </div>
 
-                  <button
-                    onClick={handleValidateQuiz}
-                    disabled={validating || questions.length === 0}
-                    className="btn btn-success w-full mt-4"
-                  >
-                    <IconSet.Check size={16} />
-                    {validating ? 'Validation...' : 'Valider le Quiz'}
-                  </button>
+                  <div className="flex gap-3 mt-4 flex-col sm:flex-row">
+                    <button
+                      onClick={handleValidateQuiz}
+                      disabled={validating || questions.length === 0}
+                      className="btn btn-success flex-1"
+                    >
+                      <IconSet.Check size={16} />
+                      {validating ? 'Validation...' : 'Valider le Quiz'}
+                    </button>
+                    <button
+                      onClick={handleDeleteQuiz}
+                      className="btn btn-danger flex-1"
+                    >
+                      <IconSet.Trash2 size={16} />
+                      Supprimer le Quiz
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
