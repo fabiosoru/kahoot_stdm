@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 
-export async function middleware(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
   // Protect admin routes
@@ -12,12 +11,11 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check admin session for other admin pages
-    const cookieStore = await cookies()
-    const session = cookieStore.get('admin_session')?.value
+    const session = request.cookies.get('admin_session')?.value
 
     if (session !== 'authenticated') {
-      // Redirect to home if not authenticated
-      return NextResponse.redirect(new URL('/', request.url))
+      // Redirect to login if not authenticated
+      return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }
 
