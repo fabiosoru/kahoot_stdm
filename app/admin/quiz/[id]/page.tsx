@@ -69,22 +69,17 @@ export default function EditQuiz() {
   }
 
   const handleValidateQuiz = async () => {
-    console.log('Validate clicked, questions count:', questions.length)
-
     if (questions.length === 0) {
-      setError('Le quiz doit contenir au least une question')
+      setError('Le quiz doit contenir au moins une question')
       return
     }
 
     setValidating(true)
     try {
-      console.log('Fetching validate API...')
       const res = await fetch(`/api/admin/quiz/${quizId}/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       })
-
-      console.log('Response status:', res.status)
 
       if (!res.ok) {
         const data = await res.json()
@@ -92,10 +87,9 @@ export default function EditQuiz() {
       }
 
       setError('')
-      console.log('Redirecting to admin...')
+      alert('Quiz validé avec succès ! Les participants peuvent maintenant y accéder.')
       setTimeout(() => router.push('/admin'), 500)
     } catch (err) {
-      console.error('Error:', err)
       setError(err instanceof Error ? err.message : 'Erreur lors de la validation')
     } finally {
       setValidating(false)
@@ -260,14 +254,27 @@ export default function EditQuiz() {
                     <span className="badge badge-info">
                       Code: <code className="font-mono font-bold">{quiz.accessCode}</code>
                     </span>
-                    <span className="badge badge-success">{questions.length} questions</span>
+                    <span className={`badge ${questions.length > 0 ? 'badge-success' : 'badge-gray'}`}>
+                      {questions.length} question{questions.length !== 1 ? 's' : ''}
+                    </span>
                   </div>
+
+                  {questions.length === 0 && (
+                    <div className="alert alert-error mt-4 flex items-start gap-3 animate-slide-up">
+                      <IconSet.AlertCircle size={20} className="flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold">Quiz incomplet</p>
+                        <p className="text-sm">Vous devez ajouter au moins une question avant de pouvoir valider le quiz</p>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex gap-3 mt-4 flex-col sm:flex-row">
                     <button
                       onClick={handleValidateQuiz}
                       disabled={validating || questions.length === 0}
                       className="btn btn-success flex-1"
+                      title={questions.length === 0 ? 'Ajouter au moins une question' : 'Valider et publier le quiz'}
                     >
                       <IconSet.Check size={16} />
                       {validating ? 'Validation...' : 'Valider le Quiz'}
