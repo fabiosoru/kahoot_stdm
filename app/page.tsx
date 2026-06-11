@@ -32,7 +32,7 @@ export default function Home() {
               alt="Journée Santé & Sécurité"
               width={400}
               height={200}
-              className="h-auto w-full max-w-xl"
+              className="h-auto w-full max-w-2xl m-0"
               priority
             />
             <Image
@@ -40,7 +40,7 @@ export default function Home() {
               alt="Affiche Journée Santé & Sécurité"
               width={300}
               height={300}
-              className="h-auto w-full max-w-2xl"
+              className="h-auto w-full max-w-2xl m-0 -mt-1"
               priority
             />
           </div>
