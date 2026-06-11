@@ -1,89 +1,113 @@
-const { PrismaClient } = require('@prisma/client')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
+const sqlite3 = require('sqlite3').verbose();
 
-const prisma = new PrismaClient()
+const dbPath = path.join(__dirname, '../data/prod.db');
+const dbDir = path.dirname(dbPath);
 
-async function main() {
-  console.log('🗂️ Initializing database...')
-
-  // Seed admin
-  const admin = await prisma.adminUser.upsert({
-    where: { id: 'admin-default' },
-    update: {},
-    create: {
-      id: 'admin-default',
-      password: '$2a$10$gI96OcrAiJC5RlnMO0Aq0O0NbkGObZyo.pO2iD4K2Ta7q3ytTOfxq', // admin123
-    },
-  })
-  console.log('✅ Admin user created')
-
-  // Seed quiz
-  const quiz = await prisma.quiz.upsert({
-    where: { accessCode: 'SANTE2026' },
-    update: {},
-    create: {
-      title: 'Journée Santé & Sécurité 2026',
-      description: 'Quiz de la 2ème édition - 17 juin 2026',
-      accessCode: 'SANTE2026',
-      isActive: true,
-      questions: {
-        create: [
-          {
-            text: 'Quelle est la première cause d\'accidents du travail ?',
-            timeLimit: 30,
-            points: 100,
-            order: 1,
-            choices: {
-              create: [
-                { text: 'Chutes de hauteur', isCorrect: false },
-                { text: 'Manutention manuelle', isCorrect: true },
-                { text: 'Exposition à des produits chimiques', isCorrect: false },
-                { text: 'Électrocution', isCorrect: false },
-              ],
-            },
-          },
-          {
-            text: 'Combien de pauses faut-il faire par heure quand on travaille sur ordinateur ?',
-            timeLimit: 25,
-            points: 100,
-            order: 2,
-            choices: {
-              create: [
-                { text: 'Aucune', isCorrect: false },
-                { text: 'Une pause de 5 minutes chaque heure', isCorrect: true },
-                { text: 'Une pause de 30 minutes', isCorrect: false },
-                { text: 'Autant que possible', isCorrect: false },
-              ],
-            },
-          },
-          {
-            text: 'Quel est le bon geste pour soulever une charge ?',
-            timeLimit: 35,
-            points: 100,
-            order: 3,
-            choices: {
-              create: [
-                { text: 'Fléchir le dos et les jambes', isCorrect: false },
-                { text: 'Fléchir les jambes et garder le dos droit', isCorrect: true },
-                { text: 'Soulever avec les bras uniquement', isCorrect: false },
-                { text: 'Utiliser une seule main', isCorrect: false },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  })
-  console.log('✅ Quiz created')
-
-  console.log('\n🎉 Database initialized successfully!')
+// Ensure directory exists
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
 }
 
-main()
-  .catch((e) => {
-    console.error('❌ Error:', e)
-    process.exit(1)
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+// Check if database needs initialization
+const needsInit = !fs.existsSync(dbPath);
+
+if (needsInit) {
+  console.log('📦 Initializing database...');
+
+  const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      console.error('❌ Failed to create database:', err);
+      process.exit(1);
+    }
+
+    const sql = `
+      CREATE TABLE quizzes (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT,
+        accessCode TEXT NOT NULL UNIQUE,
+        isActive BOOLEAN NOT NULL DEFAULT 1,
+        createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE questions (
+        id TEXT PRIMARY KEY,
+        quizId TEXT NOT NULL,
+        text TEXT NOT NULL,
+        imageUrl TEXT,
+        timeLimit INTEGER NOT NULL DEFAULT 30,
+        points INTEGER NOT NULL DEFAULT 100,
+        "order" INTEGER NOT NULL,
+        createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (quizId) REFERENCES quizzes(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE choices (
+        id TEXT PRIMARY KEY,
+        questionId TEXT NOT NULL,
+        text TEXT NOT NULL,
+        isCorrect BOOLEAN NOT NULL DEFAULT 0,
+        createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (questionId) REFERENCES questions(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE participants (
+        id TEXT PRIMARY KEY,
+        quizId TEXT NOT NULL,
+        firstName TEXT NOT NULL,
+        lastName TEXT NOT NULL,
+        company TEXT NOT NULL,
+        token TEXT NOT NULL UNIQUE,
+        score INTEGER NOT NULL DEFAULT 0,
+        startedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        completedAt DATETIME,
+        createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (quizId) REFERENCES quizzes(id) ON DELETE CASCADE,
+        UNIQUE(quizId, firstName, lastName)
+      );
+
+      CREATE TABLE answers (
+        id TEXT PRIMARY KEY,
+        participantId TEXT NOT NULL,
+        questionId TEXT NOT NULL,
+        choiceId TEXT,
+        answeredAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        timeSpent INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (participantId) REFERENCES participants(id) ON DELETE CASCADE,
+        FOREIGN KEY (questionId) REFERENCES questions(id) ON DELETE CASCADE,
+        FOREIGN KEY (choiceId) REFERENCES choices(id) ON DELETE SET NULL,
+        UNIQUE(participantId, questionId)
+      );
+
+      CREATE TABLE admin_users (
+        id TEXT PRIMARY KEY,
+        password TEXT NOT NULL,
+        createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX idx_questions_quizId ON questions(quizId);
+      CREATE INDEX idx_choices_questionId ON choices(questionId);
+      CREATE INDEX idx_participants_quizId ON participants(quizId);
+      CREATE INDEX idx_participants_token ON participants(token);
+      CREATE INDEX idx_answers_participantId ON answers(participantId);
+      CREATE INDEX idx_answers_questionId ON answers(questionId);
+    `;
+
+    db.exec(sql, (err) => {
+      db.close();
+      if (err) {
+        console.error('❌ Failed to initialize tables:', err);
+        process.exit(1);
+      }
+      console.log('✅ Database initialized successfully');
+      process.exit(0);
+    });
+  });
+} else {
+  console.log('✅ Database already exists');
+  process.exit(0);
+}
