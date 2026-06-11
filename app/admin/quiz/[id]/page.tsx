@@ -242,10 +242,10 @@ export default function EditQuiz() {
                         <span className="badge bg-gray-100 text-gray-900 font-bold">Q{idx + 1}</span>
                         <h3 className="text-lg font-semibold text-gray-900">{question.text}</h3>
                       </div>
-                      <div className="flex gap-4 text-sm text-gray-600">
-                        <span>⏱️ {question.timeLimit}s</span>
-                        <span>⭐ {question.points} pts</span>
-                        <span>📝 {question.choices.length} réponses</span>
+                      <div className="flex gap-4 text-sm text-gray-600 font-medium">
+                        <span className="flex items-center gap-1"><IconSet.Clock size={14} /> {question.timeLimit}s</span>
+                        <span className="flex items-center gap-1"><IconSet.Award size={14} /> {question.points} pts</span>
+                        <span className="flex items-center gap-1"><IconSet.Info size={14} /> {question.choices.length} réponses</span>
                       </div>
                     </div>
                     <button

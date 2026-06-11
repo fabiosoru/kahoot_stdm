@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { IconSet } from '@/components/Icon'
 
 interface LeaderboardEntry {
   id: string
@@ -51,25 +52,36 @@ export default function QuizResults() {
     fetchLeaderboard()
   }, [code])
 
-  const getRankEmoji = (rank: number) => {
-    if (rank === 1) return '🥇'
-    if (rank === 2) return '🥈'
-    if (rank === 3) return '🥉'
-    return '🎯'
+  const getRankBadge = (rank: number) => {
+    if (rank === 1) return '1er'
+    if (rank === 2) return '2e'
+    if (rank === 3) return '3e'
+    return `${rank}e`
   }
 
   const getEncouragement = (rank: number, total: number) => {
     const percentage = (rank / total) * 100
-    if (percentage <= 10) return '🔥 INCROYABLE !'
-    if (percentage <= 25) return '⭐ EXCELLENT !'
-    if (percentage <= 50) return '👍 BON !'
-    return '💪 CONTINUEZ !'
+    if (percentage <= 10) return 'INCROYABLE !'
+    if (percentage <= 25) return 'EXCELLENT !'
+    if (percentage <= 50) return 'BON !'
+    return 'CONTINUEZ !'
+  }
+
+  const getEncouragementColor = (rank: number, total: number) => {
+    const percentage = (rank / total) * 100
+    if (percentage <= 10) return 'text-red-600'
+    if (percentage <= 25) return 'text-brand-green'
+    if (percentage <= 50) return 'text-brand-blue'
+    return 'text-orange-600'
   }
 
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-brand-blue to-blue-900 flex items-center justify-center">
-        <div className="animate-bounce-in text-white text-3xl font-black">⏳ Calcul des résultats...</div>
+        <div className="text-center">
+          <div className="animate-spin inline-block w-12 h-12 border-4 border-white border-t-transparent rounded-full mb-4"></div>
+          <p className="text-white text-xl font-black">Calcul des résultats...</p>
+        </div>
       </div>
     )
   }
@@ -80,8 +92,7 @@ export default function QuizResults() {
         {/* Results Header */}
         {results && (
           <div className="text-center mb-10 animate-slide-in">
-            <div className="text-7xl mb-4">🎉</div>
-            <h1 className="text-5xl font-black text-white mb-4">Quiz Terminé !</h1>
+            <h1 className="text-5xl font-black text-white mb-8">Quiz Terminé !</h1>
 
             {/* Score Card */}
             <div className="kahoot-card p-10 mb-8 bg-gradient-to-br from-white to-blue-50 animate-bounce-in">
@@ -103,7 +114,7 @@ export default function QuizResults() {
                 <div className="bg-gradient-to-r from-brand-green to-green-500 text-white rounded-2xl p-8">
                   <p className="text-lg font-bold mb-2">Votre Classement</p>
                   <p className="text-5xl font-black mb-4">
-                    {getRankEmoji(results.rank.rank)} {results.rank.rank}e
+                    {getRankBadge(results.rank.rank)}
                   </p>
                   <p className="text-xl font-bold">sur {results.rank.total} participants</p>
                   <p className="text-2xl font-black mt-4">{getEncouragement(results.rank.rank, results.rank.total)}</p>
@@ -116,7 +127,8 @@ export default function QuizResults() {
         {/* Leaderboard */}
         <div className="kahoot-card p-10 mb-8 animate-slide-in">
           <h2 className="text-4xl font-black text-brand-blue mb-8 flex items-center gap-3">
-            🏆 Classement en direct
+            <IconSet.Award size={32} />
+            Classement en direct
           </h2>
 
           <div className="space-y-3">
@@ -139,14 +151,14 @@ export default function QuizResults() {
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    <span className="text-4xl font-black min-w-16 text-center">
-                      {['🥇', '🥈', '🥉', ...Array(leaderboard.length - 3).fill('🎯')][idx]}
-                    </span>
+                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center flex-shrink-0">
+                      <span className="text-2xl font-black text-gray-800">#{idx + 1}</span>
+                    </div>
                     <div className="text-left">
                       <p className="font-black text-lg">
                         {entry.firstName} {entry.lastName}
                       </p>
-                      <p className="text-sm font-bold opacity-75">#{idx + 1}</p>
+                      <p className="text-sm font-bold opacity-75">{entry.score} points</p>
                     </div>
                   </div>
                   <span className="text-3xl font-black text-brand-blue">{entry.score} pts</span>
